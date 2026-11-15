@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquette · appli FIMO</title>
+<style>
+body{margin:0;font-family:system-ui,sans-serif;background:#e9edf3;color:#1b2430}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:1.3rem}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.nav a{background:#fff;border:1px solid #cfd6e2;border-radius:999px;padding:6px 12px;font-size:.85rem;text-decoration:none;color:#0b5ed7}
+.nav a.on{background:#0b5ed7;color:#fff}
+.phone{width:360px;height:720px;margin:0 auto;background:#f4f6fa;border:12px solid #1b2430;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.top{background:#0b5ed7;color:#fff;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.timer{background:rgba(255,255,255,.25);border-radius:999px;padding:4px 10px;font-size:.9rem}
+.timer.low{background:#c62828}
+.scr{flex:1;overflow:auto;padding:12px}
+.card{background:#fff;border:1px solid #dde3ec;border-radius:14px;padding:12px;margin:8px 0}
+.row{display:flex;gap:10px;align-items:center}
+.num{width:34px;height:34px;border-radius:50%;background:#0b5ed7;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+.num.ok{background:#1a8f4c}.num.ex{background:#6f42c1}
+.t{font-weight:600;font-size:.95rem}.m{font-size:.78rem;color:#5d6b7c}
+.badge{font-size:.72rem;background:#eef2f8;border-radius:999px;padding:2px 8px;color:#5d6b7c;margin-left:auto;white-space:nowrap}
+.badge.ok{background:#e3f4ea;color:#1a8f4c}.badge.ko{background:#fde8e8;color:#c62828}
+.btn{display:block;width:100%;background:#0b5ed7;color:#fff;border:0;border-radius:10px;padding:13px;font-size:1rem;font-weight:600;margin:8px 0;text-align:center;text-decoration:none}
+.btn.sec{background:#fff;color:#0b5ed7;border:2px solid #0b5ed7}
+.inp{width:100%;box-sizing:border-box;padding:11px;border:2px solid #dde3ec;border-radius:10px;font-size:1rem}
+.choice{border:2px solid #dde3ec;border-radius:10px;padding:11px;margin:6px 0;background:#fff}
+.choice.sel{border-color:#0b5ed7;background:#eef3fc}.choice.good{border-color:#1a8f4c;background:#e3f4ea}.choice.bad{border-color:#c62828;background:#fde8e8}
+.score{font-size:2.2rem;font-weight:800;text-align:center;color:#1a8f4c}
+.hero{text-align:center;padding:14px 0 4px}.hero .i{font-size:3rem}
+h2{font-size:1.05rem;margin:14px 0 6px}
+.prog{height:8px;background:#dde3ec;border-radius:4px;overflow:hidden;margin:8px 0}.prog div{height:100%;background:#0b5ed7}
+table{width:100%;border-collapse:collapse;font-size:.8rem}td,th{border:1px solid #dde3ec;padding:4px 6px;text-align:left}th{background:#eef2f8}
+.key{background:#fff8e6;border-left:4px solid #e68a00;padding:8px;border-radius:8px;font-size:.85rem}
+.note{font-size:.85rem;color:#5d6b7c;text-align:center;margin-top:10px}
+section{display:none}section:target{display:block}#s1:target~#s1,section:first-of-type{display:block}
+section:target ~ section:first-of-type{display:none}
+</style>
+</head>
+<body><div class="wrap">
+<h1>Maquette cliquable · Appli révision FIMO (version téléphone)</h1>
+<div class="nav">
+<a href="#s1">1. Connexion</a><a href="#s2">2. Accueil / leçons</a><a href="#s3">3. Leçon</a><a href="#s4">4. Épreuve chrono</a><a href="#s5">5. Épreuves finales</a><a href="#s6">6. Résultats</a><a href="#s7">7. Progression</a>
+</div>
+<div class="phone">
+<div class="top"><span>🚛 FIMO</span><span id="tm"></span><span>📊</span></div>
+<div class="scr">
+
+<section id="s1">
+<div class="hero"><div class="i">🚛</div><b style="font-size:1.3rem">Révision FIMO<br>Marchandises</b><p class="m">Leçons, épreuves chronométrées, examens blancs. Gratuit, hors ligne.</p></div>
+<div class="card"><div class="m" style="margin-bottom:6px"><b>Ton prénom</b></div><input class="inp" value="Mohamed">
+<a class="btn" href="#s2">▶ Commencer (mode invité)</a>
+<div class="m" style="text-align:center">ou</div>
+<a class="btn sec" href="#s2">G&nbsp; Continuer avec Google</a>
+<a class="btn sec" href="#s2">f&nbsp; Continuer avec Facebook</a>
+<p class="m">Google / Facebook : activés après configuration Firebase (gratuit). Le mode invité marche tout de suite.</p></div>
+</section>
+
+<section id="s2">
+<b style="font-size:1.2rem">Bonjour Mohamed 👋</b><p class="m">Lis une leçon, puis passe son épreuve chronométrée.</p>
+<div class="card"><div class="row"><b>Progression</b><span class="badge">3/7 leçons · 2/7 réussies</span></div><div class="prog"><div style="width:36%"></div></div></div>
+<h2>📘 Leçons</h2>
+<a class="card row" href="#s3" style="text-decoration:none;color:inherit"><div class="num ok">✓</div><div><div class="t">RSE : temps de conduite et pauses</div><div class="m">4 h 30, 45 min, 9 h / 10 h, 56 h, 90 h…</div></div><span class="badge ok">21/24</span></a>
+<div class="card row"><div class="num ok">✓</div><div><div class="t">RSE : repos journalier, hebdo…</div><div class="m">11 h / 9 h, 45 h / 24 h, double équipage</div></div><span class="badge ok">18/23</span></div>
+<div class="card row"><div class="num">3</div><div><div class="t">Chronotachygraphe, carte, sanctions</div><div class="m">Symboles, ticket, contrôles</div></div><span class="badge ko">14/29</span></div>
+<div class="card row"><div class="num">4</div><div><div class="t">Temps de service et amplitude</div><div class="m">12 h, 15 h, pauses, nuit</div></div><span class="badge">18 q · 14 min</span></div>
+<div class="card row"><div class="num">5</div><div><div class="t">Accès au métier, documents, véhicule</div><div class="m">FIMO/FCO, licence, longueurs…</div></div><span class="badge">25 q · 19 min</span></div>
+<div class="card row"><div class="num">6</div><div><div class="t">Code de la route permis C</div><div class="m">Panneaux, alcool, feux…</div></div><span class="badge">16 q · 12 min</span></div>
+<div class="card row"><div class="num">7</div><div><div class="t">Calculs du conducteur</div><div class="m">Temps, km, surfaces, palettes</div></div><span class="badge">18 q · 14 min</span></div>
+<h2>🎓 Épreuves finales</h2>
+<a class="card row" href="#s5" style="text-decoration:none;color:inherit"><div class="num ex">1</div><div><div class="t">Épreuve finale n° 1</div><div class="m">30 q · 30 min</div></div><span class="badge">voir la liste →</span></a>
+<p class="note">Les nouvelles leçons (photos des prochaines semaines) s’ajoutent simplement à cette liste.</p>
+</section>
+
+<section id="s3">
+<span class="badge">Leçon 1 / 7</span>
+<b style="font-size:1.15rem;display:block;margin:6px 0">RSE : temps de conduite et pauses</b>
+<div class="card"><b>Les durées de conduite</b>
+<table><tr><th>Règle</th><th>Durée</th></tr><tr><td>Conduite continue</td><td><b>4 h 30</b></td></tr><tr><td>Interruption</td><td><b>45 min</b> ou 15 + 30</td></tr><tr><td>Journalière</td><td><b>9 h</b> (10 h × 2/sem.)</td></tr><tr><td>Hebdomadaire</td><td><b>56 h</b></td></tr><tr><td>2 semaines</td><td><b>90 h</b></td></tr></table>
+<p class="key">Mémo : 4 h 30 → 45 min · 9 h / 10 h · 56 h · 90 h</p>
+<p class="m">Sources : fiche RSE, exercice n° 4, QCM 561/2006…</p></div>
+<div class="card" style="text-align:center"><p class="m"><b>Épreuve de la leçon</b> : 24 questions · 18 min chrono</p><a class="btn" href="#s4">▶ Lancer l’épreuve chronométrée</a><a class="btn sec" href="#s2">← Retour aux leçons</a></div>
+</section>
+
+<section id="s4">
+<div class="row"><span class="badge">Leçon 6 · épreuve</span><span class="badge" style="background:#c62828;color:#fff">⏱ 0:48</span></div>
+<div class="prog"><div style="width:30%"></div></div>
+<div style="background:linear-gradient(160deg,#46178f,#6a2fc9);border-radius:14px;padding:10px;color:#fff">
+<div class="m" style="color:#fff">Question 7 / 16</div>
+<div style="background:#fff;border-radius:10px;display:flex;justify-content:center;padding:8px;margin:6px 0"><svg viewBox="0 0 120 120" width="110" height="110"><circle cx="60" cy="60" r="56" fill="#fff" stroke="#d9001b" stroke-width="10"/><text x="60" y="68" font-size="26" font-weight="700" text-anchor="middle" fill="#1b2430">3,5m</text><path d="M60 14l-6 10h12z M60 106l-6-10h12z" fill="#1b2430"/></svg></div>
+<div style="background:#fff;color:#1b2430;border-radius:10px;padding:10px;text-align:center;font-weight:700">Que signifie ce panneau ?</div>
+<div style="text-align:center;margin:8px 0"><span style="border:2px solid #fff;border-radius:999px;padding:4px 10px;font-size:.8rem">🔊 Écouter</span> <span style="border:2px solid #fff;border-radius:999px;padding:4px 10px;font-size:.8rem;background:#fff;color:#46178f">🔁 Lecture auto : ON</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+<div style="background:#e21b3c;border-radius:8px;padding:12px 8px;font-weight:700;font-size:.85rem;outline:3px solid #fff;outline-offset:-3px">▲ Hauteur max 3,5 m</div>
+<div style="background:#1368ce;border-radius:8px;padding:12px 8px;font-weight:700;font-size:.85rem">◆ Poids max 3,5 t</div>
+<div style="background:#d89e00;border-radius:8px;padding:12px 8px;font-weight:700;font-size:.85rem">● Largeur max 3,5 m</div>
+<div style="background:#26890c;border-radius:8px;padding:12px 8px;font-weight:700;font-size:.85rem">■ Longueur max 3,5 m</div>
+</div></div>
+<a class="btn" href="#s6">Suivante →</a><a class="btn sec" href="#s3">✕ Abandonner</a>
+<p class="note">Style Kahoot : image, question, 4 réponses colorées. 🔊 lit la question et les réponses à voix haute.</p>
+</section>
+
+<section id="s5">
+<b style="font-size:1.2rem">🎓 Épreuves finales</b><p class="m">Mélangent toutes les leçons. Examen officiel : 60 q, admis à 36.</p>
+<div class="card row"><div class="num ok">✓</div><div><div class="t">Épreuve finale n° 1</div><div class="m">30 q · 30 min · seuil 18</div></div><span class="badge ok">22/30 Admis</span></div>
+<div class="card row"><div class="num ex">2</div><div><div class="t">Épreuve finale n° 2</div><div class="m">30 q · 30 min</div></div><span class="badge ko">15/30 Échec</span></div>
+<div class="card row"><div class="num ex">3</div><div><div class="t">Épreuve finale n° 3</div><div class="m">30 q · 30 min</div></div><span class="badge">pas faite</span></div>
+<div class="card row"><div class="num ex">4</div><div><div class="t">Épreuve finale n° 4</div><div class="m">40 q · 40 min</div></div><span class="badge">pas faite</span></div>
+<div class="card row"><div class="num ex">5</div><div><div class="t">Épreuve finale n° 5</div><div class="m">40 q · 40 min</div></div><span class="badge">pas faite</span></div>
+<a class="card row" href="#s4" style="text-decoration:none;color:inherit"><div class="num ex">6</div><div><div class="t">Épreuve n° 6 · format examen</div><div class="m">60 q · 60 min · seuil 36</div></div><span class="badge">▶</span></a>
+<a class="btn sec" href="#s2">← Retour</a>
+</section>
+
+<section id="s6">
+<b style="font-size:1.1rem;display:block;text-align:center">Épreuve finale n° 1</b>
+<div class="card" style="text-align:center"><div class="score">22 / 30</div><p>✅ <b>Réussi</b> · 73 % (seuil 60 %)</p><a class="btn" href="#s4">🔁 Refaire</a><a class="btn sec" href="#s2">← Retour</a></div>
+<h2>Résultat par leçon</h2>
+<div class="row" style="gap:6px"><div class="card" style="flex:1;text-align:center"><b>90%</b><div class="m">Leçon 1</div></div><div class="card" style="flex:1;text-align:center"><b>60%</b><div class="m">Leçon 2</div></div><div class="card" style="flex:1;text-align:center"><b>50%</b><div class="m">Leçon 3</div></div></div>
+<h2>Correction détaillée</h2>
+<div class="card" style="border-left:4px solid #c62828"><div class="m">Question 3 · leçon 2</div><b>La durée du repos journalier normal est de :</b><div>❌ Ta réponse : <b>9 h</b></div><div>✔ Bonne réponse : <b>11 h</b></div><div class="m">💡 11 h consécutives ; 9 h = repos réduit (3 fois max).</div></div>
+<div class="card" style="border-left:4px solid #1a8f4c"><div class="m">Question 4 · leçon 1</div><b>Conduite maximale sur 2 semaines :</b><div>✅ Ta réponse : <b>90 h</b></div></div>
+<a class="btn sec" href="#s7">Voir ma progression →</a>
+</section>
+
+<section id="s7">
+<b style="font-size:1.2rem">📊 Progression de Mohamed</b>
+<div class="row" style="gap:6px;margin:8px 0"><div class="card" style="flex:1;text-align:center"><b style="font-size:1.4rem;color:#0b5ed7">3/7</b><div class="m">leçons lues</div></div><div class="card" style="flex:1;text-align:center"><b style="font-size:1.4rem;color:#0b5ed7">2/7</b><div class="m">réussies</div></div></div>
+<div class="row" style="gap:6px"><div class="card" style="flex:1;text-align:center"><b style="font-size:1.4rem;color:#0b5ed7">71%</b><div class="m">moyenne</div></div><div class="card" style="flex:1;text-align:center"><b style="font-size:1.4rem;color:#0b5ed7">1/6</b><div class="m">finales réussies</div></div></div>
+<h2>Par leçon</h2>
+<div class="card row"><div class="t">1. RSE : temps de conduite</div><span class="badge ok">21/24 · 15/11</span></div>
+<div class="card row"><div class="t">2. RSE : repos</div><span class="badge ok">18/23 · 15/11</span></div>
+<div class="card row"><div class="t">3. Chronotachygraphe</div><span class="badge ko">14/29 · 16/11</span></div>
+<a class="btn sec" href="#s1">👤 Changer d’utilisateur</a><a class="btn" href="#s2">← Accueil</a>
+</section>
+
+</div></div>
+<p class="note">Clique sur les boutons du téléphone ou sur les onglets en haut pour passer d’un écran à l’autre. Ce sont des écrans fixes : la vraie appli est dans index.html.</p>
+</div>
+<script>
+// Affiche la section ciblée (ou la 1re) et simule le minuteur sur l'écran épreuve
+function show(){const id=location.hash||'#s1';document.querySelectorAll('section').forEach(s=>s.style.display=('#'+s.id===id)?'block':'none');document.querySelector('.scr').scrollTop=0;document.getElementById('tm').textContent=(id==='#s4')?'⏱ 17:12':'';document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')===id));}
+addEventListener('hashchange',show);show();
+</script>
+</body></html>
