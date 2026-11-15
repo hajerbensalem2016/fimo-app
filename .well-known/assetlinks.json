@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.netlify.fimorevision",
+        "sha256_cert_fingerprints": ["FD:B1:A8:5F:38:17:36:84:58:8C:59:8D:43:D9:4F:BA:EF:A5:9A:4D:32:FD:74:58:F6:83:60:9A:5E:B0:27:D0"]
+      }
+    }]

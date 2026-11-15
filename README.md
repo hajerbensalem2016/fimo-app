@@ -37,7 +37,14 @@ Format d'une question : `{ q: 'énoncé', c: ['bonne réponse', 'autre', 'autre'
 
 **Vercel** : https://vercel.com/new, importer le dossier ou le dépôt GitHub.
 
-## Installer sur Android (comme une vraie appli)
+## Application Android (APK)
+
+- Fichier : **https://fimo-revision.netlify.app/fimo.apk** (généré avec PWABuilder, gratuit ; c'est une « Trusted Web Activity » qui ouvre l'appli en plein écran).
+- Sur le téléphone : ouvrir ce lien, accepter le téléchargement, ouvrir le fichier, autoriser « installer des applications inconnues » si Android le demande, puis Installer. L'icône 🚛 FIMO apparaît.
+- `.well-known/assetlinks.json` doit rester en ligne (il prouve que l'APK et le site vont ensemble, sinon une barre d'adresse apparaît).
+- La clé de signature (`apk-signing/`, hors git) sert à publier des mises à jour de l'APK ou à passer sur le Play Store un jour. L'APK se met à jour tout seul côté contenu (il affiche le site) : inutile de le régénérer pour de nouvelles leçons.
+
+## Installer sur Android sans APK (comme une vraie appli)
 
 1. Ouvrir l'adresse de l'appli dans **Chrome** sur le téléphone.
 2. Menu ⋮ → **« Ajouter à l'écran d'accueil »** (ou « Installer l'application »).
