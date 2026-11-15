@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Politique de confidentialité · Révision FIMO</title>
+<meta name="description" content="Politique de confidentialité de l'application Révision FIMO Marchandises : données collectées, utilisation, suppression du compte.">
+<meta name="theme-color" content="#0b5ed7">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+<style>
+.legal h2{margin-top:26px}.legal p,.legal li{color:var(--txt)}.legal ul{padding-left:20px}
+.legal .card{margin:14px 0}.legal table{width:100%;border-collapse:collapse;font-size:.95rem}
+.legal th,.legal td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.legal th{color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+<header class="top">
+  <a href="index.html" class="brand" style="text-decoration:none">🚛 FIMO</a>
+  <a href="index.html" class="ghost" style="text-decoration:none;font-size:.9rem">Retour à l’appli</a>
+</header>
+<main class="legal">
+  <h1>Politique de confidentialité</h1>
+  <p class="sub">Application « Révision FIMO Marchandises » (site <strong>fimo-revision.netlify.app</strong> et application Android <code>app.netlify.fimorevision</code>). Dernière mise à jour : 15 novembre 2026.</p>
+
+  <div class="card">
+    <strong>En résumé</strong>
+    <ul>
+      <li>L’application est gratuite, sans publicité et sans suivi publicitaire.</li>
+      <li>Elle ne demande que ce qui est nécessaire pour vous reconnaître et sauvegarder votre progression : votre compte Google (nom, adresse e-mail) et vos résultats aux leçons et examens.</li>
+      <li>Vos données ne sont jamais vendues ni partagées à des fins commerciales.</li>
+      <li>Vous pouvez supprimer votre compte et toutes vos données à tout moment, directement depuis l’application.</li>
+    </ul>
+  </div>
+
+  <h2>1. Qui est responsable ?</h2>
+  <p>L’application est développée et éditée par une personne physique, à titre indépendant. Pour toute question concernant vos données, utilisez l’adresse de contact indiquée sur la fiche de l’application dans Google Play, ou la page <a href="https://github.com/hajerbensalem2016/fimo-app">du projet sur GitHub</a>.</p>
+
+  <h2>2. Quelles données sont collectées ?</h2>
+  <table>
+    <tr><th>Donnée</th><th>Pourquoi</th><th>Où elle est stockée</th></tr>
+    <tr><td>Identifiant de compte Google, nom affiché, adresse e-mail</td><td>Vous connecter et retrouver votre progression sur tous vos appareils</td><td>Firebase Authentication et Firestore (Google Cloud, serveurs en Europe)</td></tr>
+    <tr><td>Progression : leçons lues, scores aux épreuves et examens blancs, date de dernière mise à jour</td><td>Afficher vos résultats et votre avancement</td><td>Firestore (même compte) et mémoire locale de votre appareil</td></tr>
+    <tr><td>Préférences : langue (FR/EN), lecture vocale activée ou non</td><td>Conserver vos réglages</td><td>Uniquement sur votre appareil (localStorage)</td></tr>
+  </table>
+  <p>Aucune autre donnée n’est collectée : pas de géolocalisation, pas de contacts, pas de photos, pas d’identifiant publicitaire, pas d’outil de mesure d’audience.</p>
+
+  <h2>3. Connexion avec Google</h2>
+  <p>La connexion passe par Google (service Firebase Authentication). Nous recevons uniquement votre identifiant, votre nom et votre adresse e-mail. Nous n’avons jamais accès à votre mot de passe. L’utilisation de votre compte Google est régie par la <a href="https://policies.google.com/privacy">politique de confidentialité de Google</a>.</p>
+
+  <h2>4. Qui a accès à vos données ?</h2>
+  <ul>
+    <li>Vous seul(e) : chaque utilisateur ne peut lire et modifier que ses propres données (règle de sécurité Firestore <code>users/{uid}</code>).</li>
+    <li>L’éditeur de l’application, pour la maintenance technique uniquement.</li>
+    <li>Google (Firebase), en tant qu’hébergeur, et Netlify, qui héberge le site. Ces prestataires agissent comme sous-traitants et ne sont pas autorisés à utiliser vos données pour leur propre compte.</li>
+  </ul>
+  <p>Vos données ne sont ni vendues, ni louées, ni partagées avec des annonceurs ou des tiers.</p>
+
+  <h2>5. Combien de temps sont-elles conservées ?</h2>
+  <p>Tant que votre compte existe. Si vous supprimez votre compte, vos données sont effacées de Firestore immédiatement et du compte Firebase Authentication dans les 30 jours. Les données locales sont effacées quand vous désinstallez l’application ou videz les données du navigateur.</p>
+
+  <h2>6. Supprimer votre compte et vos données</h2>
+  <p>Dans l’application : ouvrez <strong>📊 Progression</strong>, puis <strong>« Supprimer mon compte »</strong>. Cette action efface votre progression et votre compte, et ne peut pas être annulée. Vous pouvez aussi faire la demande via l’adresse de contact de la fiche Google Play : la suppression est effectuée sous 30 jours.</p>
+  <p>Vous pouvez également simplement <strong>remettre votre progression à zéro</strong> sans supprimer le compte, depuis le même écran.</p>
+
+  <h2>7. Vos droits (RGPD)</h2>
+  <p>Vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation et de portabilité de vos données. Pour les exercer, contactez-nous (voir section 1). Vous pouvez aussi saisir la CNIL (<a href="https://www.cnil.fr">cnil.fr</a>) si vous estimez que vos droits ne sont pas respectés.</p>
+
+  <h2>8. Enfants</h2>
+  <p>L’application s’adresse aux adultes qui préparent la FIMO marchandises (formation accessible à partir de 18 ans, 21 ans pour certains permis). Elle ne vise pas les enfants de moins de 13 ans et ne collecte pas sciemment de données les concernant.</p>
+
+  <h2>9. Sécurité</h2>
+  <p>Les échanges sont chiffrés (HTTPS). L’accès aux données est protégé par les règles de sécurité Firebase : seul l’utilisateur connecté peut lire ou écrire ses propres données.</p>
+
+  <h2>10. Modifications</h2>
+  <p>Cette politique peut évoluer, par exemple si une nouvelle fonctionnalité est ajoutée. La date de mise à jour en haut de page sera alors modifiée. Les changements importants seront signalés dans l’application.</p>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:30px 0">
+  <h2 id="en">Privacy policy (English summary)</h2>
+  <p>“Révision FIMO Marchandises” is a free, ad-free study app. We only collect what is needed to sign you in with Google (user ID, display name, e-mail address) and to save your study progress (lessons read, quiz and exam scores) in Firebase Firestore (Google Cloud, EU servers). Language and voice preferences are stored on your device only. No location, contacts, advertising ID or analytics are collected. Data is never sold or shared with third parties for marketing. You can delete your account and all your data at any time from the <strong>📊 Progress</strong> screen (“Delete my account”), or by contacting us through the Google Play listing; deletion is completed within 30 days. Hosting providers: Google Firebase and Netlify.</p>
+</main>
+<footer class="foot"><a href="index.html">Révision FIMO marchandises</a> · outil d’entraînement non officiel</footer>
+</body>
+</html>

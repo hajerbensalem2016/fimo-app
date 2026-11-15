@@ -60,6 +60,16 @@
     });
   }
   function signOut() { if (FB.ok) FB.auth.signOut(); setUser(null); welcome(); }
+  async function deleteAccount() {
+    P = { read: {}, quiz: {}, exam: {} }; try { localStorage.removeItem(KEY); } catch (e) {}
+    if (FB.ok && FB.user) {
+      try { await FB.db.collection('users').doc(FB.user.uid).delete(); } catch (e) {}
+      try { await FB.user.delete(); } catch (e) {
+        if (e && e.code === 'auth/requires-recent-login') { alert(t('delAccRelogin')); signOut(); return; }
+      }
+    }
+    alert(t('delAccDone')); signOut();
+  }
 
 
   // ---------- Langue (FR / EN) ----------
@@ -70,14 +80,14 @@
       lesson: 'Leçon', lessonQuiz: 'Épreuve de la leçon', chrono: 'min chrono', best: 'meilleur score', startQuiz: '▶ Lancer l’épreuve chronométrée', listenLesson: '🔊 Écouter la leçon', stopListen: '⏹ Arrêter la lecture', backLessons: '← Retour aux leçons',
       finalTag: 'Épreuve finale', intro1: 'questions à choix multiple, une seule bonne réponse par question, tirées de toutes les leçons', intro2: 'minutes : le minuteur démarre au clic sur « Commencer » et l’épreuve est corrigée automatiquement à la fin du temps', intro3: 'Seuil de réussite :', intro3b: '(60 %, comme l’examen officiel : 36/60)', intro4: 'Tu peux revenir en arrière et changer une réponse avant de valider', lastResult: 'Dernier résultat :', notAdmitted: 'non admis', on: 'le', start: '▶ Commencer l’épreuve', back: '← Retour',
       answered: 'répondues', question: 'Question', listen: '🔊 Écouter', autoOn: '🔁 Lecture auto : ON', autoOff: '🔁 Lecture auto : OFF', prev: '← Précédente', next: 'Suivante →', validate: '✔ Valider et voir le résultat', quit: '✕ Abandonner', missing: 'question(s) sans réponse. Valider quand même ?', quitConfirm: 'Abandonner ? Le score ne sera pas enregistré.', timeout: '⏱ Temps écoulé : l’épreuve a été corrigée automatiquement.', passed: '✅ Réussi', insufficient: '❌ Insuffisant', thresholdPct: '(seuil 60 %)', again: '🔁 Refaire', byLesson: 'Résultat par leçon', correction: 'Correction détaillée', yourAnswer: 'Ta réponse :', none: 'aucune', goodAnswer: 'Bonne réponse :', answer: 'Réponse',
-      statsTitle: '📊 Progression de', statQuizOk: 'épreuves de leçon réussies', statAvg: 'moyenne', statFinals: 'épreuves finales réussies', perLesson: 'Par leçon', notYet: 'pas encore fait', reset: '🗑 Remettre la progression à zéro', resetConfirm: 'Effacer toute la progression ?', logout: '👤 Se déconnecter', logoutConfirm: 'Se déconnecter ? Ta progression reste enregistrée dans ton compte.', home: '← Accueil',
+      statsTitle: '📊 Progression de', statQuizOk: 'épreuves de leçon réussies', statAvg: 'moyenne', statFinals: 'épreuves finales réussies', perLesson: 'Par leçon', notYet: 'pas encore fait', reset: '🗑 Remettre la progression à zéro', resetConfirm: 'Effacer toute la progression ?', logout: '👤 Se déconnecter', logoutConfirm: 'Se déconnecter ? Ta progression reste enregistrée dans ton compte.', delAcc: '❌ Supprimer mon compte', delAccConfirm: 'Supprimer définitivement ton compte et toute ta progression ? Cette action est irréversible.', delAccDone: 'Ton compte et tes données ont été supprimés.', delAccRelogin: 'Pour des raisons de sécurité, reconnecte-toi puis recommence la suppression.', privacy: 'Politique de confidentialité', home: '← Accueil',
       noVoice: 'La lecture vocale n’est pas disponible sur ce navigateur.', noNet: 'Connexion indisponible pour le moment (pas de réseau ?). Réessaie dans un instant.', fbSoon: 'La connexion Facebook n’est pas encore activée. Utilise « Continuer avec Google » pour l’instant.', loginFail: 'Connexion impossible : ', voice: 'fr-FR', apk: '📱 Télécharger l’appli Android (APK)', apkHint: 'Sur le téléphone : ouvrir le fichier téléchargé, autoriser l’installation, puis Installer.' },
     en: { appName: 'FIMO Revision<br>Goods transport', tagline: 'Lessons, timed tests and mock exams. Free, on phone and PC.', loginTitle: 'Sign in to find your progress on every device', google: 'G&nbsp; Continue with Google (Gmail)', facebook: 'f&nbsp; Continue with Facebook', loginHint: 'Your progress (lessons read, scores) is saved in your account and restored on all your devices. No data is shared.', connecting: 'Signing in…', loading: 'Loading…',
       hello: 'Hello', homeSub: 'Read a lesson, then take its timed test. When you have finished the lessons, practise with the final exams.', progress: 'Progress', lessonsRead: 'lessons read', quizOk: 'tests passed', lessons: '📘 Lessons', finals: '🎓 Final exams', finalsSub: 'They mix all the lessons. The official exam: 60 questions, pass mark 36 correct answers (60%).', q: 'q', min: 'min', questions: 'questions', threshold: 'pass mark', admitted: 'Passed', failed: 'Failed', sources: 'Sources',
       lesson: 'Lesson', lessonQuiz: 'Lesson test', chrono: 'min timed', best: 'best score', startQuiz: '▶ Start the timed test', listenLesson: '🔊 Listen to the lesson', stopListen: '⏹ Stop reading', backLessons: '← Back to lessons',
       finalTag: 'Final exam', intro1: 'multiple-choice questions, one correct answer each, drawn from all lessons', intro2: 'minutes: the timer starts when you click “Start” and the exam is marked automatically when time is up', intro3: 'Pass mark:', intro3b: '(60%, like the official exam: 36/60)', intro4: 'You can go back and change an answer before submitting', lastResult: 'Last result:', notAdmitted: 'failed', on: 'on', start: '▶ Start the exam', back: '← Back',
       answered: 'answered', question: 'Question', listen: '🔊 Listen', autoOn: '🔁 Auto-read: ON', autoOff: '🔁 Auto-read: OFF', prev: '← Previous', next: 'Next →', validate: '✔ Submit and see the result', quit: '✕ Give up', missing: 'unanswered question(s). Submit anyway?', quitConfirm: 'Give up? The score will not be saved.', timeout: '⏱ Time is up: the test was marked automatically.', passed: '✅ Passed', insufficient: '❌ Not enough', thresholdPct: '(pass mark 60%)', again: '🔁 Try again', byLesson: 'Result by lesson', correction: 'Detailed correction', yourAnswer: 'Your answer:', none: 'none', goodAnswer: 'Correct answer:', answer: 'Answer',
-      statsTitle: '📊 Progress of', statQuizOk: 'lesson tests passed', statAvg: 'average', statFinals: 'final exams passed', perLesson: 'By lesson', notYet: 'not done yet', reset: '🗑 Reset progress', resetConfirm: 'Erase all progress?', logout: '👤 Sign out', logoutConfirm: 'Sign out? Your progress stays saved in your account.', home: '← Home',
+      statsTitle: '📊 Progress of', statQuizOk: 'lesson tests passed', statAvg: 'average', statFinals: 'final exams passed', perLesson: 'By lesson', notYet: 'not done yet', reset: '🗑 Reset progress', resetConfirm: 'Erase all progress?', logout: '👤 Sign out', logoutConfirm: 'Sign out? Your progress stays saved in your account.', delAcc: '❌ Delete my account', delAccConfirm: 'Permanently delete your account and all your progress? This cannot be undone.', delAccDone: 'Your account and data have been deleted.', delAccRelogin: 'For security reasons, please sign in again and retry the deletion.', privacy: 'Privacy policy', home: '← Home',
       noVoice: 'Voice reading is not available in this browser.', noNet: 'Sign-in unavailable right now (no network?). Try again in a moment.', fbSoon: 'Facebook sign-in is not enabled yet. Use “Continue with Google” for now.', loginFail: 'Sign-in failed: ', voice: 'en-US', apk: '📱 Download the Android app (APK)', apkHint: 'On the phone: open the downloaded file, allow the installation, then Install.' }
   };
   let LANG = 'fr';
@@ -189,7 +199,6 @@
       h += `<div class="card lesson-item" data-exam="${ex.id}"><div class="num exam ${r && r.ok ? 'done' : ''}">${r && r.ok ? '✓' : i + 1}</div>
         <div class="info"><div class="title">${esc(ex.title)}</div><div class="meta">${ex.n} ${t('questions')} · ${ex.min} ${t('min')} · ${t('threshold')} ${Math.ceil(ex.n * 0.6)}/${ex.n}</div></div>${badge}</div>`;
     });
-    h += `<div class="card"><h3 style="margin-top:0">${t('sources')}</h3>${D().sources}</div>`;
     app.innerHTML = h;
     app.querySelectorAll('[data-lesson]').forEach((el) => el.onclick = () => lesson(el.dataset.lesson));
     app.querySelectorAll('[data-exam]').forEach((el) => el.onclick = () => examIntro(el.dataset.exam));
@@ -333,11 +342,14 @@
       <div class="stat"><b>${exDone.filter((e) => P.exam[e.id].ok).length}/${D().exams.length}</b>${t('statFinals')}</div></div>
       <h2>${t('perLesson')}</h2>${L.map((l, i) => { const q = P.quiz[l.id]; return `<div class="card lesson-item" data-lesson="${l.id}"><div class="info"><div class="title">${i + 1}. ${esc(l.title)}</div></div>${q ? `<span class="badge ${q.ok ? 'ok' : 'ko'}">${q.score}/${q.total} · ${q.date}</span>` : '<span class="badge">' + t('notYet') + '</span>'}</div>`; }).join('')}
       <h2>${t('finals')}</h2>${D().exams.map((e) => { const r = P.exam[e.id]; return `<div class="card lesson-item" data-exam="${e.id}"><div class="info"><div class="title">${esc(e.title)}</div></div>${r ? `<span class="badge ${r.ok ? 'ok' : 'ko'}">${r.score}/${r.total} · ${r.date}</span>` : '<span class="badge">' + t('notYet') + '</span>'}</div>`; }).join('')}
-      <div class="card center"><a class="btn sec" href="fimo.apk" download="fimo.apk">${t('apk')}</a><button class="btn sec" id="reset">${t('reset')}</button><button class="btn sec" id="logout">${t('logout')}</button><button class="btn" id="home">${t('home')}</button></div>`;
+      <div class="card center"><a class="btn sec" href="fimo.apk" download="fimo.apk">${t('apk')}</a><button class="btn sec" id="reset">${t('reset')}</button><button class="btn sec" id="logout">${t('logout')}</button><button class="btn" id="home">${t('home')}</button></div>
+      <p class="center" style="margin-top:14px"><button class="btn sec" id="delacc" style="color:var(--ko);border-color:var(--ko)">${t('delAcc')}</button></p>
+      <p class="center sub" style="font-size:.85rem"><a href="confidentialite.html">${t('privacy')}</a></p>`;
     app.querySelectorAll('[data-lesson]').forEach((el) => el.onclick = () => lesson(el.dataset.lesson));
     app.querySelectorAll('[data-exam]').forEach((el) => el.onclick = () => examIntro(el.dataset.exam));
     $('#reset').onclick = () => { if (confirm(t('resetConfirm'))) { P = { read: {}, quiz: {}, exam: {} }; save(P); stats(); } };
     $('#logout').onclick = () => { if (confirm(t('logoutConfirm'))) signOut(); };
+    $('#delacc').onclick = () => { if (confirm(t('delAccConfirm'))) deleteAccount(); };
     $('#home').onclick = home;
   }
 
