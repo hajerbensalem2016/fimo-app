@@ -87,3 +87,4 @@ h1{font-size:1.5rem;margin:8px 0 4px}h2{font-size:1.2rem;margin:20px 0 8px}h3{fo
 @media (max-width:420px){.kchoices{grid-template-columns:1fr}.kchoices .choice{min-height:56px}}
 .vbtn{background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.6);border-radius:999px;padding:7px 14px;font-size:.9rem;font-weight:600;cursor:pointer}
 .vbtn.on{background:#fff;color:#46178f}
+a.btn{text-decoration:none;text-align:center;box-sizing:border-box}

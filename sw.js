@@ -1,6 +1,6 @@
 /* Service worker : met tous les fichiers en cache pour fonctionner hors ligne.
    Quand tu modifies l'appli (nouvelles leçons), change le numéro de VERSION pour que les téléphones rechargent le nouveau contenu. */
-const VERSION = 'fimo-v6';
+const VERSION = 'fimo-v7';
 const FILES = ['./', './index.html', './style.css', './app.js', './data.js', './data.en.js', './manifest.json', './firebase-config.js', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
