@@ -24,6 +24,11 @@ Format d'une question : `{ q: 'énoncé', c: ['bonne réponse', 'autre', 'autre'
 - `maquette.html` : maquette cliquable des écrans (pour validation, pas nécessaire à l'appli).
 - `sources/` : photos extraites et transcriptions. **Ne pas mettre en ligne** (documents personnels).
 
+## En ligne
+
+- **Adresse principale : https://fimo-revision.netlify.app** (Netlify, projet `fimo-revision`, équipe hajer-bensalem-2016, déploiement automatique à chaque push sur `main` du dépôt GitHub `hajerbensalem2016/fimo-app`).
+- Adresse secondaire : https://hajerbensalem2016.github.io/fimo-app/ (GitHub Pages, même dépôt).
+
 ## Mettre en ligne gratuitement (3 façons)
 
 **Netlify Drop (le plus simple)** : aller sur https://app.netlify.com/drop, glisser le dossier `fimo-app` (sans `sources/`). Une adresse `https://xxx.netlify.app` est donnée tout de suite.
