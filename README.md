@@ -40,13 +40,10 @@ Format d'une question : `{ q: 'énoncé', c: ['bonne réponse', 'autre', 'autre'
 
 Remarque : le mode hors ligne (service worker) nécessite une adresse en `https://` (c'est le cas sur Netlify, GitHub Pages et Vercel), pas en `file://`.
 
-## Connexion Google / Facebook (optionnel, gratuit)
+## Connexion Google / Facebook (en place)
 
-Objectif : retrouver sa progression sur plusieurs appareils. Solution gratuite : **Firebase Authentication** (plan Spark) + **Firestore**. À faire par Hajer (ne jamais donner ses mots de passe à l'assistant) :
+Projet Firebase `fimo-app` (id `fimo-app-92a9e`, compte Google de Hajer) : Authentication avec le fournisseur **Google** activé, domaine autorisé `hajerbensalem2016.github.io`, base **Firestore** (région Europe) avec la règle « chaque utilisateur connecté lit et écrit uniquement `users/{son uid}` ». La configuration publique est dans `firebase-config.js`.
 
-1. Aller sur https://console.firebase.google.com, « Ajouter un projet » (nom libre, ex. `fimo-app`), Google Analytics désactivé.
-2. Menu **Authentication → Commencer → Fournisseurs** : activer **Google** (choisir une adresse d'assistance). Facebook demande en plus une appli sur https://developers.facebook.com (App ID + secret) : à faire plus tard, Google suffit.
-3. **Firestore Database → Créer une base** (mode production, région `europe-west`).
-4. **Paramètres du projet → Vos applications → icône Web `</>`** : enregistrer l'appli, copier le bloc `firebaseConfig`.
-5. Dans **Authentication → Paramètres → Domaines autorisés**, ajouter l'adresse du site (ex. `xxx.netlify.app`).
-6. Envoyer le bloc `firebaseConfig` à l'assistant : il branchera les boutons Google / Facebook et la synchronisation de la progression (le mode invité restera disponible).
+- La connexion est **obligatoire** (plus de mode invité). La progression est enregistrée dans Firestore et retrouvée sur tous les appareils, avec copie locale (localStorage) pour le hors-ligne.
+- **Facebook** : le bouton existe mais le fournisseur n'est pas encore activé (il faut créer une appli sur https://developers.facebook.com, puis coller l'App ID et l'App secret dans Firebase → Authentication → Sign-in method → Facebook, et ajouter l'URL de redirection donnée par Firebase dans l'appli Facebook). En attendant, le bouton affiche un message et renvoie vers Google.
+- Console : https://console.firebase.google.com/project/fimo-app-92a9e (onglet Authentication → Users pour voir les comptes connectés).

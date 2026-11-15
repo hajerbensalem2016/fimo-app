@@ -55,6 +55,7 @@
         return FB.auth.signInWithRedirect(provider);
       }
       if (e && e.code === 'auth/popup-closed-by-user') { welcome(); return; }
+      if (e && e.code === 'auth/operation-not-allowed') { alert('La connexion Facebook n’est pas encore activée. Utilise « Continuer avec Google » pour l’instant.'); welcome(); return; }
       alert('Connexion impossible : ' + (e && e.message ? e.message : e)); welcome();
     });
   }
