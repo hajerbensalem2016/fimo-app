@@ -12,10 +12,53 @@
     try { return JSON.parse(localStorage.getItem(KEY)) || { read: {}, quiz: {}, exam: {} }; }
     catch (e) { return { read: {}, quiz: {}, exam: {} }; }
   }
-  function save(p) { try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) {} }
+  function save(p) { try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) {} if (typeof cloudSave === 'function') cloudSave(); }
   let P = load();
   function getUser() { try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch (e) { return null; } }
   function setUser(u) { try { if (u) localStorage.setItem(USER_KEY, JSON.stringify(u)); else localStorage.removeItem(USER_KEY); } catch (e) {} }
+
+
+  // ---------- Firebase : connexion Google + sauvegarde de la progression par utilisateur ----------
+  const FB = { ok: false, auth: null, db: null, user: null };
+  try {
+    if (window.firebase && typeof FIREBASE_CONFIG !== 'undefined') {
+      firebase.initializeApp(FIREBASE_CONFIG);
+      FB.auth = firebase.auth(); FB.db = firebase.firestore();
+      try { FB.db.enablePersistence({ synchronizeTabs: true }).catch(() => {}); } catch (e) {}
+      FB.ok = true;
+    }
+  } catch (e) { FB.ok = false; }
+  function mergeProgress(a, b) {
+    const out = { read: Object.assign({}, a.read, b.read), quiz: Object.assign({}, a.quiz), exam: Object.assign({}, a.exam) };
+    Object.keys(b.quiz || {}).forEach((k) => { if (!out.quiz[k] || b.quiz[k].score > out.quiz[k].score) out.quiz[k] = b.quiz[k]; });
+    Object.keys(b.exam || {}).forEach((k) => { if (!out.exam[k] || b.exam[k].score >= out.exam[k].score) out.exam[k] = b.exam[k]; });
+    return out;
+  }
+  function cloudSave() {
+    if (!FB.ok || !FB.user) return;
+    FB.db.collection('users').doc(FB.user.uid).set({ progress: P, name: FB.user.displayName || '', email: FB.user.email || '', updated: new Date().toISOString() }, { merge: true }).catch(() => {});
+  }
+  async function cloudLoad() {
+    if (!FB.ok || !FB.user) return;
+    try {
+      const snap = await FB.db.collection('users').doc(FB.user.uid).get();
+      if (snap.exists && snap.data().progress) { P = mergeProgress(P, snap.data().progress); save(P); }
+      cloudSave();
+    } catch (e) {}
+  }
+  function signInWith(providerName) {
+    if (!FB.ok) { alert('Connexion indisponible pour le moment (pas de réseau ?). Réessaie dans un instant.'); return; }
+    const provider = providerName === 'facebook' ? new firebase.auth.FacebookAuthProvider() : new firebase.auth.GoogleAuthProvider();
+    const btn = $('#' + providerName); if (btn) { btn.disabled = true; btn.textContent = 'Connexion en cours…'; }
+    FB.auth.signInWithPopup(provider).catch((e) => {
+      if (e && (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment' || e.code === 'auth/cancelled-popup-request')) {
+        return FB.auth.signInWithRedirect(provider);
+      }
+      if (e && e.code === 'auth/popup-closed-by-user') { welcome(); return; }
+      alert('Connexion impossible : ' + (e && e.message ? e.message : e)); welcome();
+    });
+  }
+  function signOut() { if (FB.ok) FB.auth.signOut(); setUser(null); welcome(); }
 
   // ---------- Utilitaires ----------
   function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
@@ -75,21 +118,15 @@
   function welcome() {
     stopTimer();
     app.innerHTML = `<div class="hero"><div class="hero-ico">🚛</div><h1>Révision FIMO<br>Marchandises</h1>
-      <p class="sub">Leçons, épreuves chronométrées et examens blancs. Gratuit, hors ligne, sur téléphone.</p></div>
+      <p class="sub">Leçons, épreuves chronométrées et examens blancs. Gratuit, sur téléphone et sur PC.</p></div>
       <div class="card">
-        <label class="lbl" for="pseudo">Ton prénom (pour afficher ta progression)</label>
-        <input id="pseudo" class="inp" type="text" maxlength="30" placeholder="Ex. Mohamed" autocomplete="given-name">
-        <button class="btn big" id="guest">▶ Commencer (mode invité)</button>
-        <div class="or">ou</div>
-        <button class="btn sec big" id="google" title="Disponible après configuration Firebase">G&nbsp; Continuer avec Google</button>
-        <button class="btn sec big" id="facebook" title="Disponible après configuration Firebase">f&nbsp; Continuer avec Facebook</button>
-        <p class="hint">La progression est enregistrée sur cet appareil. La connexion Google / Facebook (pour la retrouver sur plusieurs appareils) sera activée une fois le projet Firebase configuré.</p>
+        <p class="lbl" style="text-align:center">Connecte-toi pour retrouver ta progression partout</p>
+        <button class="btn big" id="google">G&nbsp; Continuer avec Google (Gmail)</button>
+        <button class="btn sec big" id="facebook">f&nbsp; Continuer avec Facebook</button>
+        <p class="hint">Ta progression (leçons lues, scores) est enregistrée dans ton compte et retrouvée sur tous tes appareils. Aucune donnée n’est partagée.</p>
       </div>`;
-    const go = () => { const name = ($('#pseudo').value || '').trim(); setUser({ name: name || 'Invité', mode: 'guest' }); home(); };
-    $('#guest').onclick = go;
-    $('#pseudo').onkeydown = (e) => { if (e.key === 'Enter') go(); };
-    const soon = () => alert('La connexion Google / Facebook sera disponible une fois le projet Firebase configuré (voir README). En attendant, utilise le mode invité : tout fonctionne et ta progression est gardée sur cet appareil.');
-    $('#google').onclick = soon; $('#facebook').onclick = soon;
+    $('#google').onclick = () => signInWith('google');
+    $('#facebook').onclick = () => signInWith('facebook');
   }
 
   // ---------- Liste des leçons + épreuves finales ----------
@@ -264,17 +301,31 @@
       <div class="stat"><b>${exDone.filter((e) => P.exam[e.id].ok).length}/${DATA.exams.length}</b>épreuves finales réussies</div></div>
       <h2>Par leçon</h2>${L.map((l, i) => { const q = P.quiz[l.id]; return `<div class="card lesson-item" data-lesson="${l.id}"><div class="info"><div class="title">${i + 1}. ${esc(l.title)}</div></div>${q ? `<span class="badge ${q.ok ? 'ok' : 'ko'}">${q.score}/${q.total} · ${q.date}</span>` : '<span class="badge">pas encore fait</span>'}</div>`; }).join('')}
       <h2>Épreuves finales</h2>${DATA.exams.map((e) => { const r = P.exam[e.id]; return `<div class="card lesson-item" data-exam="${e.id}"><div class="info"><div class="title">${esc(e.title)}</div></div>${r ? `<span class="badge ${r.ok ? 'ok' : 'ko'}">${r.score}/${r.total} · ${r.date}</span>` : '<span class="badge">pas encore fait</span>'}</div>`; }).join('')}
-      <div class="card center"><button class="btn sec" id="reset">🗑 Remettre la progression à zéro</button><button class="btn sec" id="logout">👤 Changer d’utilisateur</button><button class="btn" id="home">← Accueil</button></div>`;
+      <div class="card center"><button class="btn sec" id="reset">🗑 Remettre la progression à zéro</button><button class="btn sec" id="logout">👤 Se déconnecter</button><button class="btn" id="home">← Accueil</button></div>`;
     app.querySelectorAll('[data-lesson]').forEach((el) => el.onclick = () => lesson(el.dataset.lesson));
     app.querySelectorAll('[data-exam]').forEach((el) => el.onclick = () => examIntro(el.dataset.exam));
     $('#reset').onclick = () => { if (confirm('Effacer toute la progression ?')) { P = { read: {}, quiz: {}, exam: {} }; save(P); stats(); } };
-    $('#logout').onclick = () => { setUser(null); welcome(); };
+    $('#logout').onclick = () => { if (confirm('Se déconnecter ? Ta progression reste enregistrée dans ton compte.')) signOut(); };
     $('#home').onclick = home;
   }
 
   $('#btn-home').onclick = home;
   $('#btn-stats').onclick = stats;
-  home();
+  if (FB.ok) {
+    app.innerHTML = '<div class="center" style="padding:60px 0;color:var(--muted)">Chargement…</div>';
+    FB.auth.getRedirectResult().catch(() => {});
+    FB.auth.onAuthStateChanged(async (u) => {
+      FB.user = u;
+      if (u) {
+        setUser({ name: (u.displayName || u.email || 'Utilisateur').split(' ')[0], mode: 'firebase', uid: u.uid });
+        await cloudLoad();
+        home();
+      } else { setUser(null); welcome(); }
+    });
+  } else {
+    // Firebase indisponible (fichier manquant ou hors ligne avant toute connexion) : on affiche l'accueil
+    setUser(null); welcome();
+  }
 
   // ---------- PWA : service worker pour le hors-ligne ----------
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
